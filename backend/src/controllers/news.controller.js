@@ -56,8 +56,7 @@ export const seedNews = async (req, res) => {
         readTime: '3 MIN',
         duration: '03:47',
         audioUrl: 'https://www.learningcontainer.com/wp-content/uploads/2020/02/Kalimba.mp3',
-        summary: "Anthropic's new memory layer lets Claude hold entire codebases in mind while it works, challenging OpenAI's dominance.",
-        image: "https://images.unsplash.com/photo-1677442136019-21780ecad995?auto=format&fit=crop&q=80&w=400&h=200"
+        summary: "Anthropic's new memory layer lets Claude hold entire codebases in mind while it works, challenging OpenAI's dominance."
       },
       {
         title: 'Nvidia overtakes Microsoft as most valuable company amid AI boom.',
@@ -66,8 +65,7 @@ export const seedNews = async (req, res) => {
         readTime: '4 MIN',
         duration: '04:12',
         audioUrl: 'https://www.learningcontainer.com/wp-content/uploads/2020/02/Kalimba.mp3',
-        summary: "The chipmaker's market capitalization reached an unprecedented high today, driven by insatiable demand for its specialized AI hardware.",
-        image: "https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?auto=format&fit=crop&q=80&w=400&h=200"
+        summary: "The chipmaker's market capitalization reached an unprecedented high today, driven by insatiable demand for its specialized AI hardware."
       },
       {
         title: 'Y Combinator announces new batch with 60% AI startups.',
@@ -76,8 +74,7 @@ export const seedNews = async (req, res) => {
         readTime: '2 MIN',
         duration: '02:30',
         audioUrl: 'https://www.learningcontainer.com/wp-content/uploads/2020/02/Kalimba.mp3',
-        summary: "The prestigious accelerator continues its heavy pivot into generative AI, funding dozens of new foundational model applications.",
-        image: "https://images.unsplash.com/photo-1559136555-9303baea8ebd?auto=format&fit=crop&q=80&w=400&h=200"
+        summary: "The prestigious accelerator continues its heavy pivot into generative AI, funding dozens of new foundational model applications."
       },
       {
         title: 'New electric vehicle battery charges to 100% in 5 minutes.',
@@ -86,8 +83,7 @@ export const seedNews = async (req, res) => {
         readTime: '5 MIN',
         duration: '05:20',
         audioUrl: 'https://www.learningcontainer.com/wp-content/uploads/2020/02/Kalimba.mp3',
-        summary: "Researchers have achieved a breakthrough in solid-state battery technology, practically eliminating range anxiety for EVs.",
-        image: "https://images.unsplash.com/photo-1593941707882-a5bba14938c7?auto=format&fit=crop&q=80&w=400&h=200"
+        summary: "Researchers have achieved a breakthrough in solid-state battery technology, practically eliminating range anxiety for EVs."
       },
       {
         title: 'Sensex hits all-time high as foreign inflows continue.',
@@ -96,8 +92,7 @@ export const seedNews = async (req, res) => {
         readTime: '3 MIN',
         duration: '03:15',
         audioUrl: 'https://www.learningcontainer.com/wp-content/uploads/2020/02/Kalimba.mp3',
-        summary: "Indian equities rallied on positive global cues and a strong influx of FII capital in the financial sector.",
-        image: "https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?auto=format&fit=crop&q=80&w=400&h=200"
+        summary: "Indian equities rallied on positive global cues and a strong influx of FII capital in the financial sector."
       },
       {
         title: 'SpaceX Starship completes successful orbital test flight.',
@@ -106,8 +101,7 @@ export const seedNews = async (req, res) => {
         readTime: '4 MIN',
         duration: '04:05',
         audioUrl: 'https://www.learningcontainer.com/wp-content/uploads/2020/02/Kalimba.mp3',
-        summary: "The mega-rocket achieved all its primary objectives, paving the way for future lunar missions.",
-        image: "https://images.unsplash.com/photo-1517976487492-5750f3195933?auto=format&fit=crop&q=80&w=400&h=200"
+        summary: "The mega-rocket achieved all its primary objectives, paving the way for future lunar missions."
       },
       {
         title: 'Apple unveils mixed reality headset at WWDC.',
@@ -116,8 +110,7 @@ export const seedNews = async (req, res) => {
         readTime: '6 MIN',
         duration: '06:10',
         audioUrl: 'https://www.learningcontainer.com/wp-content/uploads/2020/02/Kalimba.mp3',
-        summary: "The highly anticipated device promises to blend digital content with the physical world seamlessly.",
-        image: "https://images.unsplash.com/photo-1592478411213-6153e4ebc07d?auto=format&fit=crop&q=80&w=400&h=200"
+        summary: "The highly anticipated device promises to blend digital content with the physical world seamlessly."
       },
       {
         title: 'Global crypto regulations take shape after G20 summit.',
@@ -126,8 +119,7 @@ export const seedNews = async (req, res) => {
         readTime: '3 MIN',
         duration: '03:50',
         audioUrl: 'https://www.learningcontainer.com/wp-content/uploads/2020/02/Kalimba.mp3',
-        summary: "Leaders agree on a coordinated approach to regulate digital assets and prevent illicit activities.",
-        image: "https://images.unsplash.com/photo-1621504450181-5d356f61d307?auto=format&fit=crop&q=80&w=400&h=200"
+        summary: "Leaders agree on a coordinated approach to regulate digital assets and prevent illicit activities."
       },
       {
         title: 'Fintech startup Stripe raises $6.5 billion in fresh funding.',
@@ -136,8 +128,7 @@ export const seedNews = async (req, res) => {
         readTime: '2 MIN',
         duration: '02:15',
         audioUrl: 'https://www.learningcontainer.com/wp-content/uploads/2020/02/Kalimba.mp3',
-        summary: "The payments giant secures massive funding round at a $50B valuation to fuel global expansion.",
-        image: "https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?auto=format&fit=crop&q=80&w=400&h=200"
+        summary: "The payments giant secures massive funding round at a $50B valuation to fuel global expansion."
       },
       {
         title: 'Quantum computing milestone reached by Google researchers.',
@@ -146,8 +137,7 @@ export const seedNews = async (req, res) => {
         readTime: '5 MIN',
         duration: '05:30',
         audioUrl: 'https://www.learningcontainer.com/wp-content/uploads/2020/02/Kalimba.mp3',
-        summary: "Team demonstrates quantum error correction, a crucial step towards practical quantum computers.",
-        image: "https://images.unsplash.com/photo-1635070041078-e363dbe005cb?auto=format&fit=crop&q=80&w=400&h=200"
+        summary: "Team demonstrates quantum error correction, a crucial step towards practical quantum computers."
       },
       {
         title: 'CRISPR treatment for sickle cell disease approved by FDA.',
@@ -156,8 +146,7 @@ export const seedNews = async (req, res) => {
         readTime: '4 MIN',
         duration: '04:45',
         audioUrl: 'https://www.learningcontainer.com/wp-content/uploads/2020/02/Kalimba.mp3',
-        summary: "Historic approval marks the first gene-editing therapy available for patients in the US.",
-        image: "https://images.unsplash.com/photo-1532187863486-abf9dbd15805?auto=format&fit=crop&q=80&w=400&h=200"
+        summary: "Historic approval marks the first gene-editing therapy available for patients in the US."
       },
       {
         title: 'OPEC+ announces surprise oil production cuts.',
@@ -166,8 +155,7 @@ export const seedNews = async (req, res) => {
         readTime: '3 MIN',
         duration: '03:20',
         audioUrl: 'https://www.learningcontainer.com/wp-content/uploads/2020/02/Kalimba.mp3',
-        summary: "Oil prices surge following the group's decision to reduce output by over 1 million barrels a day.",
-        image: "https://images.unsplash.com/photo-1581699924510-75b22b62d854?auto=format&fit=crop&q=80&w=400&h=200"
+        summary: "Oil prices surge following the group's decision to reduce output by over 1 million barrels a day."
       },
       {
         title: 'India lands Chandrayaan-3 successfully near the lunar south pole.',
@@ -176,8 +164,7 @@ export const seedNews = async (req, res) => {
         readTime: '5 MIN',
         duration: '05:50',
         audioUrl: 'https://www.learningcontainer.com/wp-content/uploads/2020/02/Kalimba.mp3',
-        summary: "India becomes the first nation to successfully land a spacecraft in this challenging and unexplored region of the Moon.",
-        image: "https://images.unsplash.com/photo-1541185933-ef5d8ed016c2?auto=format&fit=crop&q=80&w=400&h=200"
+        summary: "India becomes the first nation to successfully land a spacecraft in this challenging and unexplored region of the Moon."
       },
       {
         title: 'OpenAI rolls out GPT-5 with multimodal reasoning capabilities.',
@@ -186,8 +173,7 @@ export const seedNews = async (req, res) => {
         readTime: '4 MIN',
         duration: '04:25',
         audioUrl: 'https://www.learningcontainer.com/wp-content/uploads/2020/02/Kalimba.mp3',
-        summary: "The latest iteration of the popular AI model can seamlessly analyze text, images, and audio simultaneously.",
-        image: "https://images.unsplash.com/photo-1677442136019-21780ecad995?auto=format&fit=crop&q=80&w=400&h=200"
+        summary: "The latest iteration of the popular AI model can seamlessly analyze text, images, and audio simultaneously."
       },
       {
         title: 'S&P 500 enters bull market territory.',
@@ -196,8 +182,7 @@ export const seedNews = async (req, res) => {
         readTime: '3 MIN',
         duration: '03:10',
         audioUrl: 'https://www.learningcontainer.com/wp-content/uploads/2020/02/Kalimba.mp3',
-        summary: "Broad market rally lifts stocks 20% above their recent lows, signaling renewed investor optimism.",
-        image: "https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?auto=format&fit=crop&q=80&w=400&h=200"
+        summary: "Broad market rally lifts stocks 20% above their recent lows, signaling renewed investor optimism."
       },
       {
         title: 'New fusion reactor design promises net-positive energy.',
@@ -206,8 +191,7 @@ export const seedNews = async (req, res) => {
         readTime: '5 MIN',
         duration: '05:15',
         audioUrl: 'https://www.learningcontainer.com/wp-content/uploads/2020/02/Kalimba.mp3',
-        summary: "A novel magnetic confinement approach could bring commercially viable fusion power closer to reality.",
-        image: "https://images.unsplash.com/photo-1593941707882-a5bba14938c7?auto=format&fit=crop&q=80&w=400&h=200"
+        summary: "A novel magnetic confinement approach could bring commercially viable fusion power closer to reality."
       },
       {
         title: 'Healthtech startup raises $100M for AI-driven diagnostics.',
@@ -216,8 +200,7 @@ export const seedNews = async (req, res) => {
         readTime: '2 MIN',
         duration: '02:45',
         audioUrl: 'https://www.learningcontainer.com/wp-content/uploads/2020/02/Kalimba.mp3',
-        summary: "The Series C round will accelerate the deployment of AI tools in hospitals across North America.",
-        image: "https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?auto=format&fit=crop&q=80&w=400&h=200"
+        summary: "The Series C round will accelerate the deployment of AI tools in hospitals across North America."
       },
       {
         title: 'Cybersecurity concerns rise amid new sophisticated ransomware.',
@@ -226,8 +209,7 @@ export const seedNews = async (req, res) => {
         readTime: '4 MIN',
         duration: '04:00',
         audioUrl: 'https://www.learningcontainer.com/wp-content/uploads/2020/02/Kalimba.mp3',
-        summary: "A new strain of malware is targeting critical infrastructure, prompting warnings from government agencies.",
-        image: "https://images.unsplash.com/photo-1550751827-4bd374c3f58b?auto=format&fit=crop&q=80&w=400&h=200"
+        summary: "A new strain of malware is targeting critical infrastructure, prompting warnings from government agencies."
       },
       {
         title: 'Fed pauses interest rate hikes after year-long tightening cycle.',
@@ -236,8 +218,7 @@ export const seedNews = async (req, res) => {
         readTime: '3 MIN',
         duration: '03:30',
         audioUrl: 'https://www.learningcontainer.com/wp-content/uploads/2020/02/Kalimba.mp3',
-        summary: "Central bank opts to leave rates unchanged as inflation shows signs of cooling.",
-        image: "https://images.unsplash.com/photo-1621504450181-5d356f61d307?auto=format&fit=crop&q=80&w=400&h=200"
+        summary: "Central bank opts to leave rates unchanged as inflation shows signs of cooling."
       },
       {
         title: 'Climate tech funding defies broader venture capital slowdown.',
@@ -246,8 +227,7 @@ export const seedNews = async (req, res) => {
         readTime: '3 MIN',
         duration: '03:45',
         audioUrl: 'https://www.learningcontainer.com/wp-content/uploads/2020/02/Kalimba.mp3',
-        summary: "Investors continue to pour money into renewable energy and carbon capture startups despite economic headwinds.",
-        image: "https://images.unsplash.com/photo-1497435334941-8c899ee9e8e9?auto=format&fit=crop&q=80&w=400&h=200"
+        summary: "Investors continue to pour money into renewable energy and carbon capture startups despite economic headwinds."
       }
     ];
 

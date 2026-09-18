@@ -38,10 +38,13 @@ export default function Login() {
   };
 
   return (
-    <div className="flex flex-col min-h-screen bg-background text-foreground p-6 pt-16">
-      <LogoHeader className="mb-24" />
+    <div className="relative flex flex-col min-h-full bg-background text-foreground p-6 pt-16 overflow-hidden">
+      {/* Background Blob */}
+      <div className="absolute top-[20%] left-1/2 -translate-x-1/2 -translate-y-1/2 w-[350px] h-[350px] bg-primary/20 blur-[120px] rounded-full pointer-events-none" />
 
-      <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="mb-12">
+      <LogoHeader className="mb-24 relative z-10" />
+
+      <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="mb-12 relative z-10">
         <h1 className="text-4xl font-bold mb-2">Good morning.</h1>
         <h2 className="text-4xl font-heading italic text-primary">News on go.</h2>
         <p className="mt-6 text-muted-foreground text-sm max-w-[80%]">
@@ -49,7 +52,7 @@ export default function Login() {
         </p>
       </motion.div>
 
-      <div className="mt-auto pt-8 space-y-4">
+      <div className="mt-auto pt-8 space-y-4 relative z-10">
         <button 
           onClick={handleGoogleLogin}
           className="w-full py-4 rounded-2xl bg-card border border-border text-foreground font-semibold flex items-center justify-center gap-3 hover:bg-muted transition-colors"

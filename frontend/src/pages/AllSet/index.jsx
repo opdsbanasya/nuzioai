@@ -41,14 +41,17 @@ export default function AllSet() {
   const voiceInfo = user.voice === 'meera' ? 'Meera — Indian, bright' : user.voice === 'kai' ? 'Kai — American, crisp' : 'Aria — British, warm';
   
   return (
-    <div className="flex flex-col h-full bg-background text-foreground p-6 pt-12 overflow-hidden">
-      <div className="flex justify-between items-center mb-4">
+    <div className="relative flex flex-col h-full bg-background text-foreground p-6 pt-12 overflow-hidden">
+      {/* Background Blob */}
+      <div className="absolute top-[25%] left-1/2 -translate-x-1/2 -translate-y-1/2 w-[350px] h-[350px] bg-secondary/20 blur-[120px] rounded-full pointer-events-none" />
+
+      <div className="flex justify-between items-center mb-4 relative z-10">
         <div className="text-[10px] text-green-500 font-bold tracking-widest uppercase flex items-center gap-2">
           <span>✓</span> ALL SET
         </div>
       </div>
 
-      <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} className="flex flex-col items-center mb-4">
+      <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} className="flex flex-col items-center mb-4 relative z-10">
         <div className="w-16 h-16 rounded-full bg-gradient-to-tr from-blue-500 via-purple-500 to-emerald-400 p-[2px] mb-4">
           <div className="w-full h-full rounded-full bg-background flex items-center justify-center">
             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" className="text-emerald-400">
@@ -67,9 +70,9 @@ export default function AllSet() {
         </p>
       </motion.div>
 
-      <div className="mb-2 text-[10px] text-primary font-bold tracking-widest uppercase">YOUR BRIEF PROFILE</div>
+      <div className="mb-2 text-[10px] text-primary font-bold tracking-widest uppercase relative z-10">YOUR BRIEF PROFILE</div>
 
-      <div className="space-y-2.5 mb-2 overflow-y-auto hide-scrollbar flex-1">
+      <div className="space-y-2.5 mb-2 overflow-y-auto hide-scrollbar flex-1 relative z-10">
         
         <div className="flex items-center gap-3 bg-card border border-border rounded-2xl p-2.5">
           <div className="w-8 h-8 rounded-xl bg-muted flex items-center justify-center text-sm">💻</div>
@@ -118,7 +121,7 @@ export default function AllSet() {
 
       </div>
 
-      <div className="mt-auto">
+      <div className="mt-auto relative z-10">
         <button 
           onClick={handleStart}
           disabled={isSaving}

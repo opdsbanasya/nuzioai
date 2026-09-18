@@ -21,7 +21,7 @@ export default function Profession() {
   const { user, setUser } = useAppStore();
 
   return (
-    <div className="flex flex-col min-h-screen bg-background text-foreground p-6 pt-16">
+    <div className="flex flex-col min-h-full bg-background text-foreground p-6 pt-16">
       <OnboardingHeader step={1} />
 
       <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="mb-8">

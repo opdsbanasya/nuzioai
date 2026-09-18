@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import useAppStore from '@/store/useAppStore';
 import api from '@/services/api';
@@ -12,9 +12,22 @@ import AudioWaveform from '@/components/AudioWaveform';
 export default function Home() {
   const { user } = useAppStore();
   const navigate = useNavigate();
+  const location = useLocation();
 
   const [newsList, setNewsList] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
+
+  // Audio State
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const [isPlaying, setIsPlaying] = useState(false);
+
+  useEffect(() => {
+    if (location.state?.autoplay) {
+      setIsPlaying(true);
+      // Clear state so it doesn't autoplay on refresh or subsequent renders
+      navigate(location.pathname, { replace: true, state: {} });
+    }
+  }, [location, navigate]);
 
 
   useEffect(() => {
@@ -35,8 +48,7 @@ export default function Home() {
   }, [user.interests]);
 
   // Audio State
-  const [currentIndex, setCurrentIndex] = useState(0);
-  const [isPlaying, setIsPlaying] = useState(false);
+
   const [progress, setProgress] = useState(0);
   const [duration, setDuration] = useState(0);
   const audioRef = useRef(null);
@@ -58,7 +70,7 @@ export default function Home() {
       setProgress(audioRef.current.currentTime);
       let currentDur = audioRef.current.duration;
       if (!currentDur || currentDur === Infinity) {
-         currentDur = currentNews.audioDuration || 0;
+        currentDur = currentNews.audioDuration || 0;
       }
       if (currentDur && currentDur !== duration) {
         setDuration(currentDur);
@@ -70,7 +82,7 @@ export default function Home() {
     if (audioRef.current) {
       let currentDur = audioRef.current.duration;
       if (!currentDur || currentDur === Infinity) {
-         currentDur = currentNews.audioDuration || 0;
+        currentDur = currentNews.audioDuration || 0;
       }
       setDuration(currentDur);
     }
@@ -95,7 +107,7 @@ export default function Home() {
       setIsPlaying(false);
     }
   };
-  
+
   const getAudioFile = () => {
     if (currentNews && currentNews.audioUrl) return currentNews.audioUrl;
 

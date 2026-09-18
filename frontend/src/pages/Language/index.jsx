@@ -7,15 +7,18 @@ export default function Language() {
   const { user, setUser } = useAppStore();
 
   return (
-    <div className="flex flex-col min-h-screen bg-background text-foreground p-6 pt-16">
-      <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="mb-12">
+    <div className="relative flex flex-col min-h-full bg-background text-foreground p-6 pt-16 overflow-hidden">
+      {/* Background Blob */}
+      <div className="absolute top-[10%] left-1/2 -translate-x-1/2 -translate-y-1/2 w-[350px] h-[350px] bg-primary/20 blur-[120px] rounded-full pointer-events-none" />
+
+      <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="mb-12 relative z-10">
         <LogoHeader />
         
         <h1 className="text-3xl font-bold mb-2">Choose your<br/><span className="font-heading italic text-primary font-normal">language</span></h1>
         <p className="text-muted-foreground text-sm">Select the language for your daily brief.</p>
       </motion.div>
 
-      <div className="space-y-4">
+      <div className="space-y-4 relative z-10">
         <button 
           onClick={() => setUser({ language: 'en' })}
           className={`w-full p-4 rounded-2xl flex items-center gap-4 border transition-all ${user.language === 'en' ? 'border-primary bg-primary/10' : 'border-border bg-card'}`}
@@ -53,7 +56,7 @@ export default function Language() {
         </div>
       </div>
 
-      <div className="mt-auto pt-8">
+      <div className="mt-auto pt-8 relative z-10">
         <button 
           onClick={() => navigate('/login')}
           className="w-full py-4 rounded-2xl bg-primary text-white font-semibold hover:opacity-90 transition-opacity"

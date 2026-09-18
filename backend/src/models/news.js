@@ -21,9 +21,7 @@ const newsSchema = new mongoose.Schema(
     source: {
       type: String,
     },
-    image: {
-      type: String,
-    },
+
     audioUrl: {
       type: String,
     },

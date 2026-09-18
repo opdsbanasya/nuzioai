@@ -9,7 +9,7 @@ export default function Settings() {
 
 
   return (
-    <div className="flex flex-col min-h-screen bg-background text-foreground pb-24">
+    <div className="flex flex-col min-h-full bg-background text-foreground pb-24">
       <MainHeader />
 
       <div className="px-6 mb-8">

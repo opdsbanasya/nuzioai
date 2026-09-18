@@ -13,12 +13,15 @@ export default function Splash() {
   }, [navigate]);
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen bg-background text-foreground">
+    <div className="relative flex flex-col items-center justify-center min-h-full bg-background text-foreground overflow-hidden">
+      {/* Background Blob */}
+      <div className="absolute top-[30%] left-1/2 -translate-x-1/2 -translate-y-1/2 w-[300px] h-[300px] bg-primary/20 blur-[100px] rounded-full pointer-events-none" />
+      
       <motion.div
         initial={{ opacity: 0, scale: 0.9 }}
         animate={{ opacity: 1, scale: 1 }}
         transition={{ duration: 0.8, ease: "easeOut" }}
-        className="flex flex-col items-center"
+        className="flex flex-col items-center relative z-10"
       >
         <div className="flex items-center gap-2 mb-8">
           {/* Mock Logo */}

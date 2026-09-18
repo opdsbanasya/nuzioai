@@ -23,7 +23,7 @@ export default function BottomNav() {
         </button>
         <div className="relative -top-6">
           <button 
-            onClick={() => navigate('/home')} 
+            onClick={() => navigate('/home', { state: { autoplay: true } })} 
             className="w-16 h-16 rounded-full bg-primary flex items-center justify-center text-white shadow-[0_10px_30px_rgba(139,92,246,0.5)] hover:scale-105 transition-transform"
           >
              <svg className="w-6 h-6 fill-current ml-1" viewBox="0 0 24 24">

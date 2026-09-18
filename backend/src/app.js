@@ -17,37 +17,10 @@ import User from "./models/user.js";
 import userRouter from "./routes/user.route.js";
 import paymentRouter from "./routes/payment.route.js";
 import newsRouter from "./routes/news.route.js";
+import authRouter from "./routes/auth.route.js";
 
 // Firebase Auth Sync Route
-app.post("/api/auth/firebase-login", async (req, res) => {
-  try {
-    const { email, name, image } = req.body;
-    if (!email) return res.status(400).json({ error: "Email is required" });
-
-    let user = await User.findOne({ email }).lean();
-    if (!user) {
-      const newUser = await User.create({ email, name, image });
-      user = newUser.toObject();
-    }
-
-    // Fetch user preferences
-    const UserPreference = (await import('./models/userPreference.js')).default;
-    const prefs = await UserPreference.findOne({ userId: user._id }).lean();
-
-    if (prefs) {
-      delete prefs._id;
-    }
-
-    const mergedUser = { ...user, ...(prefs || {}) };
-    mergedUser.subscriptionStatus = mergedUser.subscriptionStatus || "free";
-
-    res.status(200).json(mergedUser);
-  } catch (error) {
-    res.status(500).json({ error: error.message });
-  }
-});
-
-
+app.use("/api/auth", authRouter);
 
 // User routes (Preferences, etc)
 app.use("/api/users", userRouter);

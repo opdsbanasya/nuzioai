@@ -23,7 +23,7 @@ export default function Interests() {
   const { user, toggleInterest } = useAppStore();
 
   return (
-    <div className="flex flex-col min-h-screen bg-background text-foreground p-6 pt-16">
+    <div className="flex flex-col min-h-full bg-background text-foreground p-6 pt-16">
       <OnboardingHeader step={2} />
 
       <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="mb-8">
