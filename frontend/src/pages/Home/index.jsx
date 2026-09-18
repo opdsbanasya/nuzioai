@@ -15,7 +15,7 @@ export default function Home() {
 
   const [newsList, setNewsList] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
-  console.log({user})
+
 
   useEffect(() => {
     const fetchNews = async () => {
@@ -56,12 +56,23 @@ export default function Home() {
   const handleTimeUpdate = () => {
     if (audioRef.current) {
       setProgress(audioRef.current.currentTime);
+      let currentDur = audioRef.current.duration;
+      if (!currentDur || currentDur === Infinity) {
+         currentDur = currentNews.audioDuration || 0;
+      }
+      if (currentDur && currentDur !== duration) {
+        setDuration(currentDur);
+      }
     }
   };
 
   const handleLoadedMetadata = () => {
     if (audioRef.current) {
-      setDuration(audioRef.current.duration);
+      let currentDur = audioRef.current.duration;
+      if (!currentDur || currentDur === Infinity) {
+         currentDur = currentNews.audioDuration || 0;
+      }
+      setDuration(currentDur);
     }
   };
 
@@ -84,12 +95,35 @@ export default function Home() {
       setIsPlaying(false);
     }
   };
+  
+  const getAudioFile = () => {
+    if (currentNews && currentNews.audioUrl) return currentNews.audioUrl;
+
+    const voice = (user.voice || 'aria').toLowerCase();
+    if (voice === 'kai') return '/male.mp3';
+    // aria, meera, mira all use female voice
+    return '/female.mp3';
+  };
+
+  const audioPath = getAudioFile();
+  useEffect(() => {
+    if (audioRef.current) {
+      audioRef.current.load();
+      if (isPlaying) {
+        audioRef.current.play().catch(e => console.error("Audio playback failed:", e));
+      }
+    }
+  }, [audioPath]);
 
   useEffect(() => {
-    if (audioRef.current && isPlaying) {
-      audioRef.current.play().catch(e => console.error("Audio playback failed:", e));
+    if (audioRef.current) {
+      if (isPlaying) {
+        audioRef.current.play().catch(e => console.error("Audio playback failed:", e));
+      } else {
+        audioRef.current.pause();
+      }
     }
-  }, [currentIndex, isPlaying]);
+  }, [isPlaying]);
 
   const formatTime = (time) => {
     if (!time || isNaN(time)) return "00:00";
@@ -100,20 +134,13 @@ export default function Home() {
 
   // Removed static waveform heights as we use the animated component now
 
-  const getAudioFile = () => {
-    const voice = (user.voice || 'aria').toLowerCase();
-    if (voice === 'kai') return '/male.mp3';
-    // aria, meera, mira all use female voice
-    return '/female.mp3';
-  };
 
-  const audioPath = getAudioFile();
   return (
     <div className="flex flex-col h-[100dvh] bg-background text-foreground overflow-hidden">
       <MainHeader />
-      
+
       {/* Invisible Audio Element */}
-      <audio 
+      <audio
         ref={audioRef}
         src={audioPath}
         onTimeUpdate={handleTimeUpdate}
@@ -160,65 +187,65 @@ export default function Home() {
           No news found for your interests.
         </div>
       ) : (
-      <div className="px-6 mb-4 flex-1 min-h-0 flex flex-col justify-center">
-        <div className="bg-card border border-border rounded-3xl p-5 shadow-xl relative overflow-hidden flex flex-col justify-between h-full max-h-[380px]">
-           <div className="flex justify-between items-center text-[10px] font-bold text-muted-foreground uppercase tracking-widest mb-2 shrink-0">
-             <div className="flex items-center gap-2">
-               {isPlaying && <span className="w-2 h-2 rounded-full bg-primary animate-pulse" />} NOW PLAYING · {(currentNews.category || '').toUpperCase()}
-             </div>
-             <div>{(currentIndex + 1).toString().padStart(2, '0')} / {newsList.length.toString().padStart(2, '0')}</div>
-           </div>
-           
-           <h3 className="text-xl font-bold mb-2 leading-tight shrink-0">{currentNews.title}</h3>
-           
-           <div className="flex items-center gap-2 text-[9px] font-bold text-muted-foreground uppercase tracking-widest mb-2 shrink-0">
-             {currentNews.source} <span className="w-1 h-1 bg-border rounded-full" /> {currentNews.readTime} <span className="w-1 h-1 bg-border rounded-full" /> SOURCE ↗
-           </div>
-           
-           <p className="text-muted-foreground text-xs line-clamp-2 mb-3 shrink-0">
-             {currentNews.summary}
-           </p>
-           
-           {/* Organic Equalizer Waveform */}
-           <div className="mb-2 shrink-0">
-             <AudioWaveform isPlaying={isPlaying} />
-           </div>
+        <div className="px-6 mb-4 flex-1 min-h-0 flex flex-col justify-center">
+          <div className="bg-card border border-border rounded-3xl p-5 shadow-xl relative overflow-hidden flex flex-col justify-between h-full max-h-[380px]">
+            <div className="flex justify-between items-center text-[10px] font-bold text-muted-foreground uppercase tracking-widest mb-2 shrink-0">
+              <div className="flex items-center gap-2">
+                {isPlaying && <span className="w-2 h-2 rounded-full bg-primary animate-pulse" />} NOW PLAYING · {(currentNews.category || '').toUpperCase()}
+              </div>
+              <div>{(currentIndex + 1).toString().padStart(2, '0')} / {newsList.length.toString().padStart(2, '0')}</div>
+            </div>
 
-           {/* Audio Progress Bar */}
-           <div className="w-full bg-muted rounded-full h-1 mb-2 relative overflow-hidden shrink-0">
-             <div 
-               className="bg-primary h-full absolute left-0 top-0 transition-all duration-200 ease-linear shadow-[0_0_8px_rgba(139,92,246,0.5)]" 
-               style={{ width: `${duration > 0 ? (progress / duration) * 100 : 0}%` }} 
-             />
-           </div>
-           
-           <div className="flex justify-between text-[10px] text-muted-foreground font-mono mb-3 shrink-0">
-             <span>{formatTime(progress)}</span>
-             <span>-{formatTime(duration - progress)}</span>
-           </div>
-           
-           <div className="flex items-center justify-between shrink-0">
-             <button onClick={handlePrev} disabled={currentIndex === 0} className="text-muted-foreground hover:text-foreground disabled:opacity-50">
-               <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M11 17l-5-5 5-5M18 17l-5-5 5-5"/></svg>
-             </button>
-             <button onClick={togglePlayPause} className="w-12 h-12 rounded-full bg-primary/20 flex items-center justify-center text-primary shadow-[0_0_20px_rgba(139,92,246,0.3)] hover:scale-105 transition-transform">
-               <div className="w-10 h-10 rounded-full bg-primary flex items-center justify-center text-white">
-                 {isPlaying ? (
-                   <svg className="w-4 h-4 fill-current" viewBox="0 0 24 24"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>
-                 ) : (
-                   <svg className="w-4 h-4 fill-current ml-1" viewBox="0 0 24 24"><path d="M5 3l14 9-14 9V3z"/></svg>
-                 )}
-               </div>
-             </button>
-             <button onClick={handleNext} disabled={currentIndex === newsList.length - 1} className="text-muted-foreground hover:text-foreground disabled:opacity-50">
-               <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M13 17l5-5-5-5M6 17l5-5-5-5"/></svg>
-             </button>
-             <button className="text-muted-foreground hover:text-foreground">
+            <h3 className="text-xl font-bold mb-2 leading-tight shrink-0">{currentNews.title}</h3>
+
+            <div className="flex items-center gap-2 text-[9px] font-bold text-muted-foreground uppercase tracking-widest mb-2 shrink-0">
+              {currentNews.source} <span className="w-1 h-1 bg-border rounded-full" /> {currentNews.readTime} <span className="w-1 h-1 bg-border rounded-full" /> SOURCE ↗
+            </div>
+
+            <p className="text-muted-foreground text-xs line-clamp-2 mb-3 shrink-0">
+              {currentNews.summary}
+            </p>
+
+            {/* Organic Equalizer Waveform */}
+            <div className="mb-2 shrink-0">
+              <AudioWaveform isPlaying={isPlaying} />
+            </div>
+
+            {/* Audio Progress Bar */}
+            <div className="w-full bg-muted rounded-full h-1 mb-2 relative overflow-hidden shrink-0">
+              <div
+                className="bg-primary h-full absolute left-0 top-0 transition-all duration-200 ease-linear shadow-[0_0_8px_rgba(139,92,246,0.5)]"
+                style={{ width: `${duration > 0 ? (progress / duration) * 100 : 0}%` }}
+              />
+            </div>
+
+            <div className="flex justify-between text-[10px] text-muted-foreground font-mono mb-3 shrink-0">
+              <span>{formatTime(progress)}</span>
+              <span>-{formatTime(duration - progress)}</span>
+            </div>
+
+            <div className="flex items-center justify-between shrink-0">
+              <button onClick={handlePrev} disabled={currentIndex === 0} className="text-muted-foreground hover:text-foreground disabled:opacity-50">
+                <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M11 17l-5-5 5-5M18 17l-5-5 5-5" /></svg>
+              </button>
+              <button onClick={togglePlayPause} className="w-12 h-12 rounded-full bg-primary/20 flex items-center justify-center text-primary shadow-[0_0_20px_rgba(139,92,246,0.3)] hover:scale-105 transition-transform">
+                <div className="w-10 h-10 rounded-full bg-primary flex items-center justify-center text-white">
+                  {isPlaying ? (
+                    <svg className="w-4 h-4 fill-current" viewBox="0 0 24 24"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z" /></svg>
+                  ) : (
+                    <svg className="w-4 h-4 fill-current ml-1" viewBox="0 0 24 24"><path d="M5 3l14 9-14 9V3z" /></svg>
+                  )}
+                </div>
+              </button>
+              <button onClick={handleNext} disabled={currentIndex === newsList.length - 1} className="text-muted-foreground hover:text-foreground disabled:opacity-50">
+                <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M13 17l5-5-5-5M6 17l5-5-5-5" /></svg>
+              </button>
+              <button className="text-muted-foreground hover:text-foreground">
                 <span className="text-sm font-bold">{user.playbackSpeed || 1}×</span>
-             </button>
-           </div>
+              </button>
+            </div>
+          </div>
         </div>
-      </div>
       )}
 
       <div className="px-6 flex items-center gap-3 text-muted-foreground text-xs pb-24 shrink-0">

@@ -25,7 +25,7 @@ export default function Login() {
       if (response.status === 200) {
         const dbUser = response.data;
         setUser(dbUser);
-        console.log({dbUser});
+
         if (dbUser.onboardingCompleted) {
           navigate('/home');
         } else {

@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import useAppStore from '@/store/useAppStore';
 import api from '@/services/api';
 import MainHeader from '@/components/MainHeader';
+import { toast } from 'sonner';
 
 export default function Billing() {
   const navigate = useNavigate();
@@ -52,10 +53,10 @@ export default function Billing() {
 
             // 4. Update local state to unlock features
             updateSetting('subscriptionStatus', plan);
-            alert(`Success! You are now a ${plan.toUpperCase()} user.`);
+            toast.success(`Success! You are now a ${plan.toUpperCase()} user.`);
           } catch (error) {
             console.error(error);
-            alert("Payment verification failed!");
+            toast.error("Payment verification failed!");
           }
         },
         prefill: {
@@ -69,12 +70,12 @@ export default function Billing() {
 
       const rzp = new window.Razorpay(options);
       rzp.on('payment.failed', function (response) {
-        alert("Payment Failed: " + response.error.description);
+        toast.error("Payment Failed: " + response.error.description);
       });
       rzp.open();
     } catch (error) {
       console.error(error);
-      alert("Failed to initiate payment");
+      toast.error("Failed to initiate payment");
     } finally {
       setLoading(false);
     }

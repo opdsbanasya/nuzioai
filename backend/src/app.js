@@ -6,7 +6,7 @@ import { connectDb } from "./config/connection.js";
 const app = express();
 
 app.use(cors({
-  origin: "http://localhost:5173",
+  origin: process.env.FRONTEND_URL || "http://localhost:5173",
   credentials: true,
 }));
 app.use(cookieParser());
@@ -39,6 +39,7 @@ app.post("/api/auth/firebase-login", async (req, res) => {
     }
 
     const mergedUser = { ...user, ...(prefs || {}) };
+    mergedUser.subscriptionStatus = mergedUser.subscriptionStatus || "free";
 
     res.status(200).json(mergedUser);
   } catch (error) {
@@ -46,28 +47,7 @@ app.post("/api/auth/firebase-login", async (req, res) => {
   }
 });
 
-// Temporary cleanup route — delete after use
-app.post("/api/cleanup-prefs", async (req, res) => {
-  try {
-    const UserPreference = (await import('./models/userPreference.js')).default;
-    // Get all real user IDs
-    const allUsers = await User.find({}, '_id').lean();
-    const realUserIds = allUsers.map(u => u._id);
 
-    // Delete prefs where userId is NOT a real user
-    const deleted = await UserPreference.deleteMany({ userId: { $nin: realUserIds } });
-
-    // List remaining
-    const remaining = await UserPreference.find({}).lean();
-
-    res.json({
-      message: `Deleted ${deleted.deletedCount} duplicate(s)`,
-      remaining: remaining.map(p => ({ _id: p._id, userId: p.userId, voice: p.voice }))
-    });
-  } catch (error) {
-    res.status(500).json({ error: error.message });
-  }
-});
 
 // User routes (Preferences, etc)
 app.use("/api/users", userRouter);

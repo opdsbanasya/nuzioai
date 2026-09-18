@@ -4,7 +4,11 @@ import { validateWebhookSignature } from 'razorpay/dist/utils/razorpay-utils.js'
 import User from '../models/user.js';
 import { PaymentModel } from '../models/payment.js';
 
-// Initialize Razorpay with fallback dummy keys for development
+if (process.env.NODE_ENV === 'production' && (!process.env.RAZORPAY_KEY_ID || !process.env.RAZORPAY_KEY_SECRET)) {
+  throw new Error("FATAL ERROR: RAZORPAY_KEY_ID and RAZORPAY_KEY_SECRET must be provided in production.");
+}
+
+// Initialize Razorpay
 const razorpay = new Razorpay({
   key_id: process.env.RAZORPAY_KEY_ID || 'rzp_test_dummy_key_id',
   key_secret: process.env.RAZORPAY_KEY_SECRET || 'dummy_secret_key',

@@ -6,7 +6,7 @@ import BottomNav from '@/components/BottomNav';
 export default function Settings() {
   const navigate = useNavigate();
   const { user, updateSetting, logout } = useAppStore();
-  console.log({user})
+
 
   return (
     <div className="flex flex-col min-h-screen bg-background text-foreground pb-24">

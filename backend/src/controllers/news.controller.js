@@ -1,4 +1,5 @@
 import News from '../models/news.js';
+import * as googleTTS from 'google-tts-api';
 
 export const getNews = async (req, res) => {
   try {
@@ -18,7 +19,24 @@ export const getNews = async (req, res) => {
       query.category = { $in: categoriesArray };
     }
 
-    const news = await News.find(query).sort({ publishedAt: -1 }).limit(50);
+    const newsDocs = await News.find(query).sort({ publishedAt: -1 }).limit(50).lean();
+    
+    // Generate dynamic TTS audio URLs for each news item's summary
+    const news = newsDocs.map(item => {
+      try {
+        const textToSpeech = item.summary.length > 200 ? item.summary.substring(0, 197) + '...' : item.summary;
+        const audioUrl = googleTTS.getAudioUrl(textToSpeech, {
+          lang: 'en',
+          slow: false,
+          host: 'https://translate.google.com',
+        });
+        return { ...item, audioUrl };
+      } catch (err) {
+        // Fallback if text is too long (over 200 chars) or fails
+        return item;
+      }
+    });
+
     res.status(200).json(news);
   } catch (error) {
     res.status(500).json({ error: error.message });
@@ -233,7 +251,26 @@ export const seedNews = async (req, res) => {
       }
     ];
 
-    await News.insertMany(newsData);
+    const seededData = newsData.map(item => {
+      try {
+        const textToSpeech = item.summary.length > 200 ? item.summary.substring(0, 197) + '...' : item.summary;
+        const audioUrl = googleTTS.getAudioUrl(textToSpeech, {
+          lang: 'en',
+          slow: false,
+          host: 'https://translate.google.com',
+        });
+        
+        // Estimate duration based on word count (approx 150 words per minute = 2.5 words per second)
+        const wordCount = item.summary.split(/\s+/).length;
+        const audioDuration = Math.ceil(wordCount / 2.5);
+
+        return { ...item, audioUrl, audioDuration };
+      } catch (err) {
+        return item; // Fallback to Kalimba if fails
+      }
+    });
+
+    await News.insertMany(seededData);
 
     res.status(200).json({ message: "Successfully seeded 20 news items!" });
   } catch (error) {
