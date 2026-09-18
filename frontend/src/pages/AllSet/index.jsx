@@ -1,13 +1,35 @@
+import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import useAppStore from '@/store/useAppStore';
+import api from '@/services/api';
 
 export default function AllSet() {
   const navigate = useNavigate();
   const { user } = useAppStore();
 
-  const handleStart = () => {
-    navigate('/home');
+  const [isSaving, setIsSaving] = React.useState(false);
+
+  const handleStart = async () => {
+    setIsSaving(true);
+    try {
+      if (user._id) {
+        await api.post('/users/preferences', {
+          userId: user._id,
+          language: user.language,
+          profession: user.profession,
+          interests: user.interests,
+          voice: user.voice,
+          briefLength: user.briefLength,
+          deliveryTime: user.deliveryTime,
+        });
+      }
+    } catch (error) {
+      console.error('Failed to save preferences:', error);
+    } finally {
+      setIsSaving(false);
+      navigate('/home');
+    }
   };
 
   // Safe fallbacks for data
@@ -37,7 +59,7 @@ export default function AllSet() {
         
         <h1 className="text-2xl font-bold text-center mb-2">
           You're ready,<br/>
-          <span className="font-heading italic text-emerald-400">Aarav.</span>
+          <span className="font-heading italic text-emerald-400">{user.name ? user.name.split(' ')[0] : 'Professional'}.</span>
         </h1>
         <p className="text-muted-foreground text-[11px] text-center max-w-[260px] leading-tight">
           Your first brief will be ready tomorrow at {user.deliveryTime || '7:00 AM'}.
@@ -99,9 +121,10 @@ export default function AllSet() {
       <div className="mt-auto">
         <button 
           onClick={handleStart}
-          className="w-full py-3.5 rounded-2xl bg-gradient-to-r from-emerald-400 to-blue-500 text-black font-bold hover:opacity-90 transition-opacity"
+          disabled={isSaving}
+          className="w-full py-3.5 rounded-2xl bg-gradient-to-r from-emerald-400 to-blue-500 text-black font-bold hover:opacity-90 transition-opacity disabled:opacity-50"
         >
-          Start listening →
+          {isSaving ? 'Saving profile...' : 'Start listening →'}
         </button>
       </div>
     </div>

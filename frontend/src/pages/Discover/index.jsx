@@ -1,71 +1,136 @@
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import MainHeader from '@/components/MainHeader';
 import BottomNav from '@/components/BottomNav';
+import api from '@/services/api';
+
+const CATEGORIES = ['All', 'AI & Tech', 'Markets', 'Startups', 'Science', 'Technology'];
 
 export default function Discover() {
   const navigate = useNavigate();
+  const [searchQuery, setSearchQuery] = useState('');
+  const [activeCategory, setActiveCategory] = useState('All');
+  
+  const [newsList, setNewsList] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+
+  // Debounce search query
+  const [debouncedSearch, setDebouncedSearch] = useState(searchQuery);
+
+  useEffect(() => {
+    const timerId = setTimeout(() => {
+      setDebouncedSearch(searchQuery);
+    }, 500);
+    return () => clearTimeout(timerId);
+  }, [searchQuery]);
+
+  useEffect(() => {
+    const fetchNews = async () => {
+      setIsLoading(true);
+      try {
+        const params = {};
+        if (activeCategory !== 'All') {
+          // Send original lowercase category
+          if (activeCategory === 'AI & Tech') params.category = 'technology';
+          else params.category = activeCategory.toLowerCase();
+        }
+        if (debouncedSearch) {
+          params.search = debouncedSearch;
+        }
+
+        const response = await api.get('/news', { params });
+        setNewsList(response.data);
+      } catch (error) {
+        console.error("Failed to fetch discover news:", error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+    fetchNews();
+  }, [activeCategory, debouncedSearch]);
 
   return (
-    <div className="flex flex-col min-h-screen bg-background text-foreground pb-24">
+    <div className="flex flex-col min-h-[100dvh] bg-background text-foreground pb-24">
       <MainHeader />
 
-      <div className="px-6 mb-8">
+      <div className="px-6 mb-8 mt-2">
         <h1 className="text-4xl font-heading mb-2 text-gray-200">Discover</h1>
         <p className="text-muted-foreground text-sm">Inshorts-style — swipe the world.</p>
       </div>
 
+      {/* Search */}
       <div className="px-6 mb-6">
         <div className="bg-card border border-border rounded-2xl flex items-center gap-3 p-4">
           <span className="text-primary">🔍</span>
-          <input type="text" placeholder="Search stories, sources, topics..." className="bg-transparent border-none outline-none flex-1 text-sm text-foreground placeholder:text-muted-foreground" />
+          <input 
+            type="text" 
+            placeholder="Search stories, sources, topics..." 
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            className="bg-transparent border-none outline-none flex-1 text-sm text-foreground placeholder:text-muted-foreground" 
+          />
         </div>
       </div>
 
+      {/* Categories */}
       <div className="px-6 flex gap-2 overflow-x-auto hide-scrollbar mb-8 pb-2">
-        <button className="px-5 py-2 rounded-full bg-secondary text-black font-semibold text-sm">All</button>
-        <button className="px-5 py-2 rounded-full bg-card text-muted-foreground border border-border text-sm font-semibold whitespace-nowrap">AI & Tech</button>
-        <button className="px-5 py-2 rounded-full bg-card text-muted-foreground border border-border text-sm font-semibold whitespace-nowrap">Markets</button>
-        <button className="px-5 py-2 rounded-full bg-card text-muted-foreground border border-border text-sm font-semibold whitespace-nowrap">Startups</button>
+        {CATEGORIES.map(cat => (
+          <button 
+            key={cat}
+            onClick={() => setActiveCategory(cat)}
+            className={`px-5 py-2 rounded-full text-sm font-semibold whitespace-nowrap border transition-colors ${
+              activeCategory === cat 
+                ? 'bg-secondary text-black border-secondary' 
+                : 'bg-card text-muted-foreground border-border'
+            }`}
+          >
+            {cat}
+          </button>
+        ))}
       </div>
 
+      {/* Cards */}
       <div className="px-6 space-y-4">
-        {/* Story Card */}
-        <div className="bg-card border border-border rounded-2xl p-5 relative">
-          <div className="flex items-center gap-2 text-xs font-bold tracking-widest uppercase mb-3">
-            <span className="text-primary bg-primary/20 px-2 py-0.5 rounded">AI & TECH</span>
-            <span className="text-muted-foreground">THE VERGE ↗</span>
+        {isLoading ? (
+          <div className="flex justify-center py-10">
+            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
           </div>
-          <h3 className="text-xl font-bold mb-3">Anthropic ships Claude 4.5 with 2M-token memory and native tools.</h3>
-          <p className="text-muted-foreground text-sm line-clamp-2 mb-4">
-            Anthropic's new memory layer lets Claude hold entire codebases in mind while it works.
-          </p>
-          <div className="flex justify-between items-center">
-            <span className="text-xs text-muted-foreground font-bold tracking-widest uppercase">3 MIN READ</span>
-            <div className="flex gap-2">
-              <button className="w-10 h-10 rounded-full bg-secondary flex items-center justify-center text-black">▶</button>
-              <button className="w-10 h-10 rounded-full bg-muted flex items-center justify-center text-muted-foreground">☆</button>
+        ) : newsList.length > 0 ? (
+          newsList.map(news => (
+            <div key={news._id} className="bg-card border border-border rounded-2xl overflow-hidden relative shadow-lg">
+              {news.image && (
+                <div className="h-40 w-full overflow-hidden">
+                  <img src={news.image} alt={news.title} className="w-full h-full object-cover opacity-80" />
+                </div>
+              )}
+              <div className="p-5">
+                <div className="flex items-center gap-2 text-xs font-bold tracking-widest uppercase mb-3">
+                  <span className="text-primary bg-primary/20 px-2 py-0.5 rounded">{news.category}</span>
+                  <span className="text-muted-foreground">{news.source} ↗</span>
+                </div>
+                <h3 className="text-xl font-bold mb-3 leading-tight">{news.title}</h3>
+                <p className="text-muted-foreground text-sm line-clamp-2 mb-4">
+                  {news.summary}
+                </p>
+                <div className="flex justify-between items-center mt-auto">
+                  <span className="text-xs text-muted-foreground font-bold tracking-widest uppercase">{news.readTime} READ</span>
+                  <div className="flex gap-2">
+                    <button className="w-10 h-10 rounded-full bg-secondary flex items-center justify-center text-black hover:scale-105 transition-transform shadow-[0_0_15px_rgba(139,92,246,0.3)]">
+                      <svg className="w-4 h-4 fill-current ml-0.5" viewBox="0 0 24 24"><path d="M5 3l14 9-14 9V3z"/></svg>
+                    </button>
+                    <button className="w-10 h-10 rounded-full bg-muted flex items-center justify-center text-muted-foreground hover:bg-muted/80">
+                      <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>
+                    </button>
+                  </div>
+                </div>
+              </div>
             </div>
+          ))
+        ) : (
+          <div className="text-center py-10 text-muted-foreground">
+            No stories found matching your criteria.
           </div>
-        </div>
-
-        {/* Story Card 2 */}
-        <div className="bg-card border border-border rounded-2xl p-5 relative">
-          <div className="flex items-center gap-2 text-xs font-bold tracking-widest uppercase mb-3">
-            <span className="text-blue-500 bg-blue-500/20 px-2 py-0.5 rounded">GLOBAL</span>
-            <span className="text-muted-foreground">BLOOMBERG ↗</span>
-          </div>
-          <h3 className="text-xl font-bold mb-3">Fed minutes hint at a September policy shift.</h3>
-          <p className="text-muted-foreground text-sm line-clamp-2 mb-4">
-            Officials flagged growing confidence that inflation is cooling toward target.
-          </p>
-          <div className="flex justify-between items-center">
-            <span className="text-xs text-muted-foreground font-bold tracking-widest uppercase">2 MIN READ</span>
-            <div className="flex gap-2">
-              <button className="w-10 h-10 rounded-full bg-secondary flex items-center justify-center text-black">▶</button>
-              <button className="w-10 h-10 rounded-full bg-muted flex items-center justify-center text-muted-foreground">☆</button>
-            </div>
-          </div>
-        </div>
+        )}
       </div>
 
       <BottomNav />

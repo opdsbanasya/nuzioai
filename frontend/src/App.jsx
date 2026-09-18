@@ -13,6 +13,7 @@ import Discover from './pages/Discover';
 import Settings from './pages/Settings';
 import Billing from './pages/Billing';
 import AllSet from './pages/AllSet';
+import ProtectedRoute from './components/ProtectedRoute';
 
 function App() {
   return (
@@ -28,12 +29,14 @@ function App() {
           <Route path="/time" element={<Time />} />
           <Route path="/notification" element={<Notification />} />
           <Route path="/all-set" element={<AllSet />} />
-          
+
           {/* Main App Routes */}
-          <Route path="/home" element={<Home />} />
-          <Route path="/discover" element={<Discover />} />
-          <Route path="/settings" element={<Settings />} />
-          <Route path="/billing" element={<Billing />} />
+          <Route element={<ProtectedRoute />}>
+            <Route path="/home" element={<Home />} />
+            <Route path="/discover" element={<Discover />} />
+            <Route path="/settings" element={<Settings />} />
+            <Route path="/billing" element={<Billing />} />
+          </Route>
 
           <Route path="*" element={<Navigate to="/" replace />} />
         </Route>

@@ -14,7 +14,7 @@ export default function Voice() {
   const { user, setUser } = useAppStore();
 
   return (
-    <div className="flex flex-col h-full bg-background text-foreground p-6 pt-12 overflow-hidden">
+    <div className="flex flex-col h-full bg-background text-foreground p-6 pt-12 overflow-auto">
       <OnboardingHeader step={3} />
 
       <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="mb-4">
