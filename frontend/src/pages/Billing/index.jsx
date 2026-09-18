@@ -37,7 +37,7 @@ export default function Billing() {
         key: import.meta.env.VITE_RAZORPAY_KEY_ID || 'rzp_test_dummy_key_id', // Uses real key if available, else dummy
         amount: order.amount,
         currency: order.currency,
-        name: "Morning Brief",
+        name: "Nuzio AI",
         description: `Upgrade to ${plan.toUpperCase()} Plan`,
         order_id: order.id,
         handler: async function (response) {
